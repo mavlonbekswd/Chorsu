@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #f6eee0;
+  --cream-2: #efe3cc;
+  --surface: #fcf7ec;
+  --clay: #c2542f;
+  --clay-deep: #a23f22;
+  --saffron: #e2a12c;
+  --turquoise: #2e9d95;
+  --turquoise-deep: #14706a;
+  --ink: #3b2a1d;
+  --muted: #8a7259;
+  --line: #e4d6bc;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Warm daylight wash — soft saffron/turquoise light, like a sunlit courtyard */
+.bazaar-day {
+  background:
+    radial-gradient(80% 60% at 85% 0%, rgba(226, 161, 44, 0.16), transparent 60%),
+    radial-gradient(70% 60% at 0% 20%, rgba(46, 157, 149, 0.1), transparent 55%),
+    linear-gradient(180deg, #faf3e6 0%, var(--cream) 55%, var(--cream-2) 100%);
+}
+
+/* Hand-painted tile texture — warm girih lattice as ceramic ornament */
+.girih-texture {
+  background-image:
+    linear-gradient(45deg, rgba(194, 84, 47, 0.1) 25%, transparent 25%, transparent 75%, rgba(194, 84, 47, 0.1) 75%),
+    linear-gradient(-45deg, rgba(46, 157, 149, 0.1) 25%, transparent 25%, transparent 75%, rgba(46, 157, 149, 0.1) 75%);
+  background-size: 22px 22px;
+  background-position: 0 0, 11px 11px;
+}
+
+/* Suzani-style stitched ornament band */
+.tile-band {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--clay) 0 10px,
+    var(--saffron) 10px 20px,
+    var(--turquoise) 20px 30px
+  );
+}
+
+/* Focus ring — visible keyboard focus everywhere */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Scroll-reveal: hidden until .is-visible toggled by IntersectionObserver */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* The trade-route line draws itself when lit */
+.route-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.6s ease-in-out;
+}
+.route-path.is-drawn {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .route-path {
+    stroke-dashoffset: 0;
+  }
+}
