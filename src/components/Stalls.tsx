@@ -1,6 +1,8 @@
+"use client";
+
 import Link from "next/link";
-import { ideas } from "@/lib/data";
 import Reveal from "./Reveal";
+import { useLang } from "./LanguageProvider";
 
 const sectorColor: Record<string, string> = {
   Retail: "text-turquoise-deep border-turquoise/30 bg-turquoise/10",
@@ -11,23 +13,23 @@ const sectorColor: Record<string, string> = {
 };
 
 export default function Stalls() {
+  const { t } = useLang();
   return (
     <section id="stalls" className="relative mx-auto max-w-6xl px-5 py-24 sm:py-28">
       <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="max-w-2xl">
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-clay-deep">Today&apos;s stalls</p>
+          <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-clay-deep">{t.stalls.eyebrow}</p>
           <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-            The goods on display today.
+            {t.stalls.title}
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
-            Each stall holds an idea grounded in a real local problem. Unlock one to carry home its
-            full architecture.
+            {t.stalls.sub}
           </p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {ideas.map((idea, i) => (
+        {t.stalls.ideas.map((idea, i) => (
           <Reveal key={idea.slug} delay={(i % 3) * 90}>
             <article className="group relative h-full overflow-hidden rounded-2xl border border-line bg-surface p-5 shadow-[0_10px_30px_-22px_rgba(59,42,29,0.5)] transition-all duration-300 hover:-translate-y-1 hover:border-clay/40 hover:shadow-[0_20px_44px_-22px_rgba(194,84,47,0.5)]">
               {/* warm glow that rises on hover */}
@@ -37,7 +39,7 @@ export default function Stalls() {
                 <span
                   className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${sectorColor[idea.sector]}`}
                 >
-                  {idea.sector}
+                  {idea.sectorLabel}
                 </span>
                 <h3 className="mt-4 font-display text-xl font-semibold text-ink">{idea.name}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{idea.problem}</p>
@@ -54,7 +56,7 @@ export default function Stalls() {
                 <div className="absolute inset-0 bg-cream/70" />
                 <div className="absolute inset-0 flex items-center justify-center gap-2">
                   <Lantern className="h-5 w-5 text-clay transition-transform duration-500 group-hover:scale-110" />
-                  <span className="text-xs font-medium text-ink">Architecture locked</span>
+                  <span className="text-xs font-medium text-ink">{t.stalls.locked}</span>
                 </div>
               </div>
             </article>
@@ -67,7 +69,7 @@ export default function Stalls() {
           href="/signup"
           className="group inline-flex items-center gap-2 rounded-full border border-clay/40 px-6 py-3 text-sm font-semibold text-clay-deep transition-colors hover:bg-clay/10"
         >
-          Walk the whole bazaar
+          {t.stalls.cta}
           <span className="transition-transform group-hover:translate-x-1">→</span>
         </Link>
       </div>

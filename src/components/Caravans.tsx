@@ -1,19 +1,22 @@
+"use client";
+
 import Link from "next/link";
-import { caravans } from "@/lib/data";
 import Reveal from "./Reveal";
+import { useLang } from "./LanguageProvider";
 
 export default function Caravans() {
+  const { t } = useLang();
   return (
     <section id="caravans" className="relative mx-auto max-w-6xl px-5 py-24 sm:py-28">
       <div className="mb-12 max-w-2xl">
-        <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-clay-deep">Choose your caravan</p>
+        <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-clay-deep">{t.caravans.eyebrow}</p>
         <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-          Pick how you travel the bazaar.
+          {t.caravans.title}
         </h2>
       </div>
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        {caravans.map((c, i) => (
+        {t.caravanCards.map((c, i) => (
           <Reveal key={c.name} delay={i * 90} className="h-full">
             <div
               className={`relative flex h-full flex-col rounded-2xl border p-6 transition-all ${
@@ -35,7 +38,7 @@ export default function Caravans() {
 
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="font-display text-3xl font-semibold text-ink">
-                  {c.price === "0" ? "Free" : c.price}
+                  {c.price === "0" ? c.free : c.price}
                 </span>
                 {c.unit && <span className="text-sm text-muted">{c.unit}</span>}
               </div>
@@ -68,7 +71,7 @@ export default function Caravans() {
         ))}
       </div>
 
-      <p className="mt-6 text-center text-xs text-muted">Prices are placeholders, set by the owner.</p>
+      <p className="mt-6 text-center text-xs text-muted">{t.caravans.note}</p>
     </section>
   );
 }

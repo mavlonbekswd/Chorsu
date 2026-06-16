@@ -27,6 +27,30 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Hero ground tuned to the dome illustration's cream so the PNG melts in */
+.hero-bg {
+  background-color: #fbf1de;
+  background-image:
+    radial-gradient(70% 50% at 85% 0%, rgba(226, 161, 44, 0.16), transparent 60%),
+    radial-gradient(60% 55% at 0% 12%, rgba(46, 157, 149, 0.09), transparent 55%);
+}
+
+/* Floating gold sparkle over the dome */
+@keyframes spark-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+.spark-bob {
+  animation: spark-bob 4s ease-in-out infinite;
+}
+
 /* Warm daylight wash — soft saffron/turquoise light, like a sunlit courtyard */
 .bazaar-day {
   background:

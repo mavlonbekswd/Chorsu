@@ -1,0 +1,17 @@
+# Cartographies of Light
+
+**A design philosophy.**
+
+## Manifesto
+
+Cartographies of Light treats connection as something that can be *charted*. It borrows the cold authority of the astronomer's plate and the cartographer's survey, then turns that instrument upon a subject that has no fixed coordinates — the movement of meaning between people. The work behaves like a page torn from the atlas of an imaginary science: a discipline that measures exchange the way others measure stars. Every mark must read as evidence, drawn by a hand that has spent a lifetime at the drafting table. This is a movement of patient accumulation and master-level execution, where nothing is decorative and everything is *recorded*.
+
+The governing form is the radial field — concentric order expanding from a single luminous center. Geometry is not ornament here; it is grammar. Interlocking stars and polygons tessellate outward in bands, each ring a different register of the same logic, like the courses of a dome read from below. Symmetry is exact, division is true, and the eye is rewarded for sustained attention by ever-finer subdivision. The repetition must feel inevitable — the product of countless hours of setting compass to point, the painstaking discipline of someone at the absolute top of their field. Imperfection is permitted only as the faint wear of an instrument long used, never as the slackness of haste.
+
+Color is rationed like a rare pigment. A warm, aged ground — parchment, lime-wash, the cream of old paper — holds a palette of no more than four or five tones: a deep sepia ink for all linework and lettering, a cool tile-turquoise, a fired terracotta, and a single note of lantern-gold that appears only where the composition reaches its highest pitch. Color carries information, never mood for its own sake; a field tinted turquoise *means* something the eye learns to read. The restraint is the craftsmanship — the choice to withhold is what makes the few saturated marks luminous.
+
+Space is the chart's most important material. Wide silent margins frame a dense, jewel-like core, so the density reads as precision rather than clutter. Fine traced paths — survey lines, trade routes, the threads of a network — span the empty field to bind scattered waypoints to the central rosette, proving that distant things belong to one system. Tick marks, degree rings, and reference grids sit at the threshold of visibility, lending the quiet rigor of measurement. Every line has a reason; every void is intentional and held with the care of a meditation.
+
+Text is the faintest layer — clinical, sparse, set as if engraved by the plate-maker. A single elegant title, a whispered coordinate, a numbered legend, perhaps one short phrase carrying the soul of the piece. Words anchor what the geometry already says; they never explain. Letters are thin, exact, and integrated into the architecture of the page as just another precise instrument-mark. Nothing is centered for comfort, nothing padded for ease — each character is placed with the deliberation of a master engraver, never crowding, never falling from the plate's true margins.
+
+The result should feel discovered rather than designed: an artifact that proves something ephemeral — connection, exchange, the meeting of distant worlds — can be studied, mapped, and held to the light. It must look as though it took uncountable hours and the full expertise of a devoted hand, an object worthy of a museum vitrine. Make the invisible legible through geometry, and let the silence of the page do the rest.

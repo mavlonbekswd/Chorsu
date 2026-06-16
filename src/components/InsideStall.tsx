@@ -1,17 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { nasiyaDetail } from "@/lib/data";
+import { useLang } from "./LanguageProvider";
 
-const views = [
-  { id: "need", label: "The need" },
-  { id: "design", label: "The design" },
-  { id: "foundation", label: "The foundation" },
-  { id: "connections", label: "The connections" },
-  { id: "trade", label: "The trade" },
-] as const;
-
-type ViewId = (typeof views)[number]["id"];
+type ViewId = "need" | "design" | "foundation" | "connections" | "trade";
 
 const methodColor: Record<string, string> = {
   GET: "text-turquoise-deep",
@@ -21,18 +13,29 @@ const methodColor: Record<string, string> = {
 };
 
 export default function InsideStall() {
+  const { t } = useLang();
+  const inside = t.inside;
   const [view, setView] = useState<ViewId>("need");
+
+  const views: { id: ViewId; label: string }[] = [
+    { id: "need", label: inside.views.need },
+    { id: "design", label: inside.views.design },
+    { id: "foundation", label: inside.views.foundation },
+    { id: "connections", label: inside.views.connections },
+    { id: "trade", label: inside.views.trade },
+  ];
 
   return (
     <section className="relative mx-auto max-w-6xl px-5 py-24 sm:py-28">
       <div className="mb-10 max-w-2xl">
-        <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-clay-deep">Inside a stall</p>
+        <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-clay-deep">{inside.eyebrow}</p>
         <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-          What you carry home.
+          {inside.title}
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
-          One stall, opened up. This is <span className="text-ink">Nasiya</span> — a digital credit
-          ledger for neighborhood shops. Walk through the craft behind the good.
+          {inside.subPre}
+          <span className="text-ink">Nasiya</span>
+          {inside.subPost}
         </p>
       </div>
 
@@ -45,10 +48,10 @@ export default function InsideStall() {
             </span>
             <div>
               <p className="font-display text-base font-semibold text-ink">Nasiya</p>
-              <p className="text-xs text-muted">Retail · unlocked</p>
+              <p className="text-xs text-muted">{t.sectors.Retail} · {inside.unlocked}</p>
             </div>
           </div>
-          <span className="hidden text-xs text-turquoise-deep sm:inline">● open</span>
+          <span className="hidden text-xs text-turquoise-deep sm:inline">● {inside.open}</span>
         </div>
 
         {/* view switcher */}
@@ -71,7 +74,7 @@ export default function InsideStall() {
         <div className="min-h-[320px] px-5 py-7 sm:px-7">
           {view === "need" && (
             <ul className="space-y-4">
-              {nasiyaDetail.need.map((p, i) => (
+              {inside.need.map((p, i) => (
                 <li key={i} className="flex gap-3 text-sm leading-relaxed text-muted sm:text-base">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-saffron" />
                   <span>{p}</span>
@@ -82,7 +85,7 @@ export default function InsideStall() {
 
           {view === "design" && (
             <ul className="space-y-4">
-              {nasiyaDetail.design.map((p, i) => (
+              {inside.design.map((p, i) => (
                 <li key={i} className="flex gap-3 text-sm leading-relaxed text-muted sm:text-base">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-turquoise" />
                   <span>{p}</span>
@@ -93,11 +96,11 @@ export default function InsideStall() {
 
           {view === "foundation" && (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {nasiyaDetail.schema.map((t) => (
-                <div key={t.name} className="rounded-xl border border-line bg-cream p-4">
-                  <p className="mb-3 font-mono text-sm font-semibold text-turquoise-deep">{t.name}</p>
+              {inside.schema.map((tbl) => (
+                <div key={tbl.name} className="rounded-xl border border-line bg-cream p-4">
+                  <p className="mb-3 font-mono text-sm font-semibold text-turquoise-deep">{tbl.name}</p>
                   <ul className="space-y-2">
-                    {t.fields.map((f) => (
+                    {tbl.fields.map((f) => (
                       <li key={f.name} className="flex flex-wrap items-baseline gap-x-2 text-xs">
                         <span className="font-mono text-ink">{f.name}</span>
                         <span className="font-mono text-muted">{f.type}</span>
@@ -112,7 +115,7 @@ export default function InsideStall() {
 
           {view === "connections" && (
             <div className="overflow-hidden rounded-xl border border-line">
-              {nasiyaDetail.endpoints.map((e, i) => (
+              {inside.endpoints.map((e, i) => (
                 <div
                   key={i}
                   className={`flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:gap-4 ${
@@ -131,7 +134,7 @@ export default function InsideStall() {
 
           {view === "trade" && (
             <ul className="space-y-4">
-              {nasiyaDetail.trade.map((p, i) => (
+              {inside.trade.map((p, i) => (
                 <li key={i} className="flex gap-3 text-sm leading-relaxed text-muted sm:text-base">
                   <span className="mt-1.5 font-mono text-xs font-semibold text-clay-deep">0{i + 1}</span>
                   <span>{p}</span>

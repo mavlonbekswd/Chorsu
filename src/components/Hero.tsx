@@ -1,28 +1,28 @@
+"use client";
+
 import Link from "next/link";
-import BazaarScene from "./BazaarScene";
+import HeroBackdrop from "./HeroBackdrop";
+import { useLang } from "./LanguageProvider";
 
 export default function Hero() {
+  const { t } = useLang();
   return (
-    <section id="top" className="bazaar-day relative isolate overflow-hidden">
-      {/* faint tile wash, top corners only */}
-      <div className="girih-texture pointer-events-none absolute inset-0 opacity-[0.5] [mask-image:radial-gradient(60%_50%_at_50%_-10%,black,transparent)]" aria-hidden="true" />
+    <section id="top" className="hero-bg relative isolate min-h-[100svh] overflow-hidden">
+      <HeroBackdrop />
 
-      <div className="relative mx-auto grid min-h-[100svh] max-w-6xl grid-cols-1 items-center gap-8 px-5 pb-12 pt-28 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6 lg:pb-16">
-        {/* copy — left */}
-        <div className="order-2 lg:order-1">
-          <p className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-clay/30 bg-clay/10 px-3 py-1 text-xs font-medium tracking-wide text-clay-deep">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-start px-5 pb-12 pt-28 sm:justify-center sm:pb-16 sm:pt-24">
+        <div className="max-w-xl">
+          <p className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-clay/30 bg-cream/70 px-3 py-1 text-xs font-medium tracking-wide text-clay-deep backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-saffron" />
-            The bazaar of ideas · Central Asia
+            {t.hero.eyebrow}
           </p>
 
-          <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.06] tracking-tight text-ink sm:text-5xl md:text-6xl">
-            Every great build starts at the bazaar.
+          <h1 className="font-display text-4xl font-semibold leading-[1.06] tracking-tight text-ink drop-shadow-[0_1px_0_rgba(251,241,222,0.8)] sm:text-5xl md:text-6xl">
+            {t.hero.headline}
           </h1>
 
-          <p className="mt-6 max-w-lg text-base leading-relaxed text-muted sm:text-lg">
-            Chorsu is a marketplace of ready-to-build startup ideas — each one carrying its full
-            architecture: the problem, the solution, the database, the API, and the road to revenue.
-            Pick an idea. Carry it home. Build.
+          <p className="mt-6 max-w-lg text-base leading-relaxed text-ink/80 sm:text-lg">
+            {t.hero.sub}
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -30,25 +30,17 @@ export default function Hero() {
               href="/signup"
               className="rounded-full bg-clay px-6 py-3 text-center text-sm font-semibold text-cream shadow-[0_10px_24px_-12px_rgba(162,63,34,0.9)] transition-transform hover:scale-[1.03]"
             >
-              Enter the bazaar
+              {t.hero.primary}
             </Link>
             <a
               href="#stalls"
-              className="rounded-full border border-ink/15 px-6 py-3 text-center text-sm font-semibold text-ink transition-colors hover:border-clay/50 hover:text-clay-deep"
+              className="rounded-full border border-ink/15 bg-cream/60 px-6 py-3 text-center text-sm font-semibold text-ink backdrop-blur-sm transition-colors hover:border-clay/50 hover:text-clay-deep"
             >
-              See the stalls
+              {t.hero.secondary}
             </a>
           </div>
         </div>
-
-        {/* illustration — right */}
-        <div className="order-1 mx-auto w-full max-w-md lg:order-2 lg:max-w-none">
-          <BazaarScene />
-        </div>
       </div>
-
-      {/* gentle settle into the next section */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-cream" />
     </section>
   );
 }

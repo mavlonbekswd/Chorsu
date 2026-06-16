@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useLang } from "./LanguageProvider";
 
 export default function FinalCta() {
+  const { t } = useLang();
   return (
     <section className="relative mx-auto max-w-6xl px-5 py-14">
       <div className="relative overflow-hidden rounded-3xl bg-clay px-6 py-16 text-center sm:px-12 sm:py-20">
@@ -11,13 +15,13 @@ export default function FinalCta() {
 
         <div className="relative">
           <h2 className="mx-auto max-w-2xl font-display text-3xl font-semibold leading-tight tracking-tight text-cream sm:text-4xl">
-            The bazaar is open. Your next idea is waiting at a stall.
+            {t.final.line}
           </h2>
           <Link
             href="/signup"
             className="mt-8 inline-block rounded-full bg-cream px-8 py-3.5 text-sm font-semibold text-clay-deep shadow-[0_12px_28px_-12px_rgba(59,42,29,0.7)] transition-transform hover:scale-[1.03]"
           >
-            Enter the bazaar
+            {t.final.button}
           </Link>
         </div>
       </div>

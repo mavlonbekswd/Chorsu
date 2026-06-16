@@ -1,36 +1,21 @@
-import Reveal from "./Reveal";
+"use client";
 
-const promises = [
-  {
-    title: "Real goods, not echoes",
-    body: "Every idea is shaped around a true local problem, with architecture you can ship — not a generic answer you could get anywhere.",
-  },
-  {
-    title: "Made for these roads",
-    body: "Click, Payme, and Telegram are woven into each blueprint, not bolted on.",
-  },
-  {
-    title: "No wasted days",
-    body: "The foundation and connections come ready — begin real work, not setup.",
-  },
-  {
-    title: "The bazaar never sleeps",
-    body: "Fresh, market-specific ideas arrive every week.",
-  },
-];
+import Reveal from "./Reveal";
+import { useLang } from "./LanguageProvider";
 
 export default function MerchantPromise() {
+  const { t } = useLang();
   return (
     <section className="relative mx-auto max-w-6xl px-5 py-24 sm:py-28">
       <div className="mb-12 max-w-2xl">
-        <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-clay-deep">The merchant&apos;s promise</p>
+        <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-clay-deep">{t.promise.eyebrow}</p>
         <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-          Why trade here.
+          {t.promise.title}
         </h2>
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        {promises.map((p, i) => (
+        {t.promise.items.map((p, i) => (
           <Reveal key={p.title} delay={(i % 2) * 90}>
             <div className="relative h-full overflow-hidden rounded-2xl border border-line bg-surface p-6 shadow-[0_12px_34px_-26px_rgba(59,42,29,0.6)]">
               <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-saffron/15 blur-2xl" aria-hidden="true" />

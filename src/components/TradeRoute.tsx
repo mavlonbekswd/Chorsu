@@ -1,26 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
-const stops = [
-  {
-    n: "01",
-    title: "Browse the stalls",
-    body: "Wander a growing bazaar of ideas, sorted by sector and stack.",
-  },
-  {
-    n: "02",
-    title: "Choose your good",
-    body: "Pick the idea that fits your market and your hands.",
-  },
-  {
-    n: "03",
-    title: "Build the same day",
-    body: "Unlock its full architecture and start — no setup days lost on the road.",
-  },
-];
+import { useLang } from "./LanguageProvider";
 
 export default function TradeRoute() {
+  const { t } = useLang();
+  const stops = t.route.stops.map((s, i) => ({ n: `0${i + 1}`, ...s }));
   const ref = useRef<HTMLDivElement | null>(null);
   const [drawn, setDrawn] = useState(false);
 
@@ -43,9 +28,9 @@ export default function TradeRoute() {
   return (
     <section id="route" ref={ref} className="relative mx-auto max-w-6xl px-5 py-24 sm:py-28">
       <div className="mb-14 max-w-2xl">
-        <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-clay-deep">The trade route</p>
+        <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-clay-deep">{t.route.eyebrow}</p>
         <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-          Three stops on the road from idea to build.
+          {t.route.title}
         </h2>
       </div>
 
