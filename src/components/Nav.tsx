@@ -52,13 +52,14 @@ export default function Nav() {
           ))}
         </ul>
 
+        {/* TODO: replace with real auth — for now Log in / Enter the bazaar go straight to /dashboard (stub) */}
         <div className="hidden items-center gap-4 md:flex">
           <LanguageSwitcher />
-          <Link href="/signup" className="text-sm text-muted transition-colors hover:text-ink">
+          <Link href="/dashboard" className="text-sm text-muted transition-colors hover:text-ink">
             {t.nav.login}
           </Link>
           <Link
-            href="/signup"
+            href="/dashboard"
             className="rounded-full bg-clay px-4 py-2 text-sm font-semibold text-cream shadow-[0_8px_18px_-10px_rgba(162,63,34,0.9)] transition-transform hover:scale-[1.03]"
           >
             {t.nav.enter}
@@ -98,11 +99,11 @@ export default function Nav() {
               </li>
             ))}
             <li className="mt-2 flex flex-col gap-3 border-t border-line pt-4">
-              <Link href="/signup" onClick={() => setOpen(false)} className="text-base text-muted">
+              <Link href="/dashboard" onClick={() => setOpen(false)} className="text-base text-muted">
                 {t.nav.login}
               </Link>
               <Link
-                href="/signup"
+                href="/dashboard"
                 onClick={() => setOpen(false)}
                 className="rounded-full bg-clay px-4 py-3 text-center text-base font-semibold text-cream"
               >

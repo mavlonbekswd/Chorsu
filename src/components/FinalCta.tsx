@@ -17,8 +17,9 @@ export default function FinalCta() {
           <h2 className="mx-auto max-w-2xl font-display text-3xl font-semibold leading-tight tracking-tight text-cream sm:text-4xl">
             {t.final.line}
           </h2>
+          {/* TODO: replace with real auth — stub navigates straight into the dashboard */}
           <Link
-            href="/signup"
+            href="/dashboard"
             className="mt-8 inline-block rounded-full bg-cream px-8 py-3.5 text-sm font-semibold text-clay-deep shadow-[0_12px_28px_-12px_rgba(59,42,29,0.7)] transition-transform hover:scale-[1.03]"
           >
             {t.final.button}

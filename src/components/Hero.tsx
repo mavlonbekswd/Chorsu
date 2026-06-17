@@ -26,8 +26,9 @@ export default function Hero() {
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            {/* TODO: replace with real auth — stub navigates straight into the dashboard */}
             <Link
-              href="/signup"
+              href="/dashboard"
               className="rounded-full bg-clay px-6 py-3 text-center text-sm font-semibold text-cream shadow-[0_10px_24px_-12px_rgba(162,63,34,0.9)] transition-transform hover:scale-[1.03]"
             >
               {t.hero.primary}
