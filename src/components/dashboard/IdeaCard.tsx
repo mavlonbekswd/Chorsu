@@ -1,18 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import type { Idea, Sector, Plan } from "@/lib/mock-ideas";
+import type { Idea, Plan } from "@/lib/mock-ideas";
+import { useLang } from "@/components/LanguageProvider";
 import { BookmarkIcon } from "./icons";
-
-const sectorPill: Record<Sector, string> = {
-  Retail: "text-turquoise-deep border-turquoise/30 bg-turquoise/10",
-  Food: "text-clay-deep border-clay/30 bg-clay/10",
-  Education: "text-turquoise-deep border-turquoise/30 bg-turquoise/10",
-  Health: "text-clay-deep border-clay/30 bg-clay/10",
-  Services: "text-turquoise-deep border-turquoise/30 bg-turquoise/10",
-};
-
-const planLabel: Record<Plan, string> = { free: "Free", pro: "Pro", team: "Team" };
 
 export default function IdeaCard({
   idea,
@@ -23,15 +14,14 @@ export default function IdeaCard({
   saved: boolean;
   onToggleSave: (id: string) => void;
 }) {
+  const { t } = useLang();
   const locked = idea.minPlan !== "free"; // current mock plan is Free
+  const planText: Record<Plan, string> = { free: t.dash.plan.free, pro: t.dash.plan.pro, team: t.dash.plan.team };
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface p-5 shadow-[0_10px_30px_-22px_rgba(59,42,29,0.5)] transition-all duration-300 hover:-translate-y-1 hover:border-clay/40 hover:shadow-[0_20px_44px_-22px_rgba(194,84,47,0.45)]">
-      {/* warm glow on hover */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-0 bg-gradient-to-t from-saffron/15 to-transparent transition-all duration-500 group-hover:h-2/3" />
-
+    <article className="group relative flex h-full flex-col rounded-2xl border border-d-border bg-d-elev p-5 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-d-border-strong hover:shadow-soft-md">
       {/* stretched click target → idea detail */}
-      <Link href={`/dashboard/idea/${idea.id}`} className="absolute inset-0 z-10" aria-label={`Open ${idea.name}`} />
+      <Link href={`/dashboard/idea/${idea.id}`} className="absolute inset-0 z-10 rounded-2xl" aria-label={`Open ${idea.name}`} />
 
       {/* save toggle (above the link) */}
       <button
@@ -39,48 +29,35 @@ export default function IdeaCard({
         aria-pressed={saved}
         aria-label={saved ? `Remove ${idea.name} from saved` : `Save ${idea.name}`}
         className={`absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border transition-colors ${
-          saved ? "border-clay/40 bg-clay/10 text-clay-deep" : "border-line bg-cream text-muted hover:text-clay-deep"
+          saved
+            ? "border-d-accent bg-d-accent text-white shadow-soft"
+            : "border-d-border bg-d-surface text-d-faint hover:border-d-border-strong hover:text-d-ink"
         }`}
       >
-        <BookmarkIcon className={saved ? "fill-clay-deep" : ""} />
+        <BookmarkIcon className={saved ? "fill-current" : ""} />
       </button>
 
       <div className="relative flex items-center gap-2">
-        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${sectorPill[idea.sector]}`}>
-          {idea.sector}
+        <span className="inline-flex items-center rounded-full border border-d-border px-2.5 py-0.5 text-[11px] font-medium text-d-muted">
+          {t.sectors[idea.sector]}
         </span>
-        {idea.isTrending && <span className="text-[11px] font-medium text-clay-deep">🔥 Trending</span>}
-        {idea.isNew && <span className="text-[11px] font-medium text-turquoise-deep">✨ New</span>}
+        {idea.isTrending && <span className="text-[10px] font-semibold uppercase tracking-wider text-d-faint">{t.dash.flags.trending}</span>}
+        {idea.isNew && <span className="text-[10px] font-semibold uppercase tracking-wider text-d-accent">{t.dash.flags.new}</span>}
       </div>
 
-      <h3 className="relative mt-3 font-display text-xl font-semibold text-ink">{idea.name}</h3>
-      <p className="relative mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted">{idea.problem}</p>
+      <h3 className="relative mt-3 font-display text-xl font-semibold text-d-ink">{idea.name}</h3>
+      <p className="relative mt-1.5 line-clamp-2 text-sm leading-relaxed text-d-muted">{idea.problem}</p>
 
-      {/* meta row */}
       <div className="relative mt-auto flex items-center justify-between pt-4">
-        <span className="inline-flex items-center gap-1.5 text-xs text-muted">
-          <span className="h-1.5 w-1.5 rounded-full bg-turquoise" />
-          {idea.stack}
+        <span className="text-xs text-d-faint">{idea.stack}</span>
+        <span
+          className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+            locked ? "border-d-gold/40 text-d-gold" : "border-d-border text-d-faint"
+          }`}
+        >
+          {locked ? planText[idea.minPlan] : t.dash.plan.open}
         </span>
-        {locked ? (
-          <span className="inline-flex items-center gap-1 rounded-full border border-saffron/40 bg-saffron/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-clay-deep">
-            <LockIcon /> {planLabel[idea.minPlan]}
-          </span>
-        ) : (
-          <span className="rounded-full border border-turquoise/30 bg-turquoise/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-turquoise-deep">
-            Open
-          </span>
-        )}
       </div>
     </article>
-  );
-}
-
-function LockIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <rect x="5" y="11" width="14" height="9" rx="2" />
-      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-    </svg>
   );
 }

@@ -4,10 +4,17 @@ import { useEffect, useRef, useState } from "react";
 import { LANGS } from "@/lib/i18n";
 import { useLang } from "./LanguageProvider";
 
-export default function LanguageSwitcher({ className = "" }: { className?: string }) {
+export default function LanguageSwitcher({
+  className = "",
+  variant = "warm",
+}: {
+  className?: string;
+  variant?: "warm" | "neutral";
+}) {
   const { lang, setLang } = useLang();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
+  const neutral = variant === "neutral";
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -26,7 +33,11 @@ export default function LanguageSwitcher({ className = "" }: { className?: strin
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label="Change language"
-        className="flex items-center gap-1.5 rounded-full border border-ink/15 px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:border-clay/50"
+        className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+          neutral
+            ? "border-d-border text-d-muted hover:bg-d-hover hover:text-d-ink"
+            : "border-ink/15 text-ink hover:border-clay/50"
+        }`}
       >
         <GlobeIcon />
         <span>{current.label}</span>
@@ -38,7 +49,11 @@ export default function LanguageSwitcher({ className = "" }: { className?: strin
       {open && (
         <ul
           role="listbox"
-          className="absolute right-0 z-50 mt-2 w-40 overflow-hidden rounded-xl border border-line bg-surface py-1 shadow-[0_18px_40px_-20px_rgba(59,42,29,0.6)]"
+          className={`absolute right-0 z-50 mt-2 w-40 overflow-hidden rounded-xl border py-1 ${
+            neutral
+              ? "border-d-border bg-d-elev shadow-soft-md"
+              : "border-line bg-surface shadow-[0_18px_40px_-20px_rgba(59,42,29,0.6)]"
+          }`}
         >
           {LANGS.map((l) => (
             <li key={l.code} role="option" aria-selected={l.code === lang}>
@@ -47,12 +62,14 @@ export default function LanguageSwitcher({ className = "" }: { className?: strin
                   setLang(l.code);
                   setOpen(false);
                 }}
-                className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition-colors hover:bg-clay/10 ${
-                  l.code === lang ? "font-semibold text-clay-deep" : "text-ink"
+                className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition-colors ${
+                  neutral
+                    ? `hover:bg-d-hover ${l.code === lang ? "font-semibold text-d-accent" : "text-d-muted"}`
+                    : `hover:bg-clay/10 ${l.code === lang ? "font-semibold text-clay-deep" : "text-ink"}`
                 }`}
               >
                 <span>{l.name}</span>
-                <span className="text-xs text-muted">{l.label}</span>
+                <span className={`text-xs ${neutral ? "text-d-faint" : "text-muted"}`}>{l.label}</span>
               </button>
             </li>
           ))}

@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ideas as ALL_IDEAS, SECTORS } from "@/lib/mock-ideas";
+import { useLang } from "@/components/LanguageProvider";
+import { useSaved } from "./SavedProvider";
 import SearchBar from "./SearchBar";
 import FilterBar, { type SortKey } from "./FilterBar";
 import QuickTabs, { type TabKey } from "./QuickTabs";
@@ -11,6 +13,7 @@ import IdeaGrid from "./IdeaGrid";
 const PAGE = 9;
 
 export default function IdeasMarketplace() {
+  const { t } = useLang();
   const params = useSearchParams();
   const initialSector = useMemo(() => {
     const raw = params.get("sector");
@@ -23,19 +26,11 @@ export default function IdeasMarketplace() {
   const [plan, setPlan] = useState("");
   const [sort, setSort] = useState<SortKey>("featured");
   const [tab, setTab] = useState<TabKey>("all");
-  const [saved, setSaved] = useState<Set<string>>(new Set());
+  const { saved, toggle: toggleSave } = useSaved();
   const [visible, setVisible] = useState(PAGE);
 
   // reflect a sector chosen from the sidebar (?sector=…)
   useEffect(() => setSector(initialSector), [initialSector]);
-
-  const toggleSave = (id: string) =>
-    setSaved((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
 
   const filtered = useMemo(() => {
     let list = ALL_IDEAS.slice();
@@ -66,20 +61,20 @@ export default function IdeasMarketplace() {
 
   const shown = filtered.slice(0, visible);
   const chips: { label: string; clear: () => void }[] = [];
-  if (sector) chips.push({ label: sector, clear: () => setSector("") });
+  if (sector) chips.push({ label: t.sectors[sector as keyof typeof t.sectors] ?? sector, clear: () => setSector("") });
   if (stack) chips.push({ label: stack, clear: () => setStack("") });
-  if (plan) chips.push({ label: plan[0].toUpperCase() + plan.slice(1), clear: () => setPlan("") });
+  if (plan) chips.push({ label: t.dash.plan[plan as keyof typeof t.dash.plan], clear: () => setPlan("") });
   if (q.trim()) chips.push({ label: `“${q.trim()}”`, clear: () => setQ("") });
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-8 sm:px-8">
       {/* 1 — header with count */}
       <header className="mb-6">
-        <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-clay-deep">The bazaar</p>
+        <p className="mb-2 text-xs font-medium uppercase tracking-[0.22em] text-d-accent">{t.dash.eyebrow}</p>
         <div className="flex flex-wrap items-end justify-between gap-2">
-          <h2 className="font-display text-3xl font-semibold tracking-tight text-ink">Ideas</h2>
-          <p className="text-sm text-muted">
-            <span className="font-semibold text-ink">{ALL_IDEAS.length}</span> ready-to-build ideas across {SECTORS.length} sectors
+          <h2 className="font-display text-3xl font-semibold tracking-tight text-d-ink">{t.dash.ideas}</h2>
+          <p className="text-sm text-d-muted">
+            <span className="font-semibold text-d-ink">{ALL_IDEAS.length}</span> {t.dash.ideasWord} · {SECTORS.length} {t.dash.sectorsWord}
           </p>
         </div>
       </header>
@@ -109,17 +104,17 @@ export default function IdeasMarketplace() {
       </div>
 
       {/* 5 — result count + active filters */}
-      <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-muted">
+      <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-d-muted">
         <span>
-          Showing <span className="font-semibold text-ink">{filtered.length}</span> {filtered.length === 1 ? "idea" : "ideas"}
+          {t.dash.showing} <span className="font-semibold text-d-ink">{filtered.length}</span> {t.dash.ideasWord}
         </span>
         {chips.map((c, i) => (
           <button
             key={i}
             onClick={c.clear}
-            className="inline-flex items-center gap-1 rounded-full border border-line bg-surface px-2.5 py-0.5 text-xs text-ink transition-colors hover:border-clay/40"
+            className="inline-flex items-center gap-1 rounded-full border border-d-border bg-d-surface px-2.5 py-0.5 text-xs text-d-ink shadow-soft transition-colors hover:border-d-border-strong"
           >
-            {c.label} <span className="text-muted">✕</span>
+            {c.label} <span className="text-d-faint">✕</span>
           </button>
         ))}
         {chips.length > 0 && (
@@ -130,9 +125,9 @@ export default function IdeasMarketplace() {
               setPlan("");
               setQ("");
             }}
-            className="text-xs font-medium text-clay-deep hover:underline"
+            className="text-xs font-medium text-d-accent underline-offset-2 hover:underline"
           >
-            Clear all
+            {t.dash.clearAll}
           </button>
         )}
       </div>
@@ -145,9 +140,9 @@ export default function IdeasMarketplace() {
         <div className="mt-8 flex justify-center">
           <button
             onClick={() => setVisible((v) => v + 6)}
-            className="rounded-full border border-clay/40 px-6 py-2.5 text-sm font-semibold text-clay-deep transition-colors hover:bg-clay/10"
+            className="rounded-full border border-d-border bg-d-surface px-6 py-2.5 text-sm font-semibold text-d-ink shadow-soft transition-colors hover:border-d-border-strong hover:bg-d-hover"
           >
-            Load more ({filtered.length - visible} left)
+            {t.dash.loadMore} ({filtered.length - visible} {t.dash.left})
           </button>
         </div>
       )}

@@ -20,6 +20,46 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ============ "Velvet Slate" dashboard skin tokens ============ */
+/* Light: soft barely-tinted slate. Dark: deep warm charcoal. Neither extreme. */
+.dash {
+  --d-bg: 236 238 242; /* #ECEEF2 canvas */
+  --d-surface: 246 247 249; /* #F6F7F9 sidebar / topbar */
+  --d-elev: 252 252 253; /* #FCFCFD elevated cards */
+  --d-border: 226 229 235; /* #E2E5EB fine line */
+  --d-border-strong: 209 214 222;
+  --d-ink: 31 36 48; /* #1F2430 warm slate ink */
+  --d-muted: 110 118 130; /* #6E7682 */
+  --d-faint: 154 162 174;
+  --d-hover: 231 234 240; /* #E7EAF0 */
+  --d-accent: 24 124 116; /* turquoise, legible on light */
+  --d-primary: 188 79 44; /* terracotta */
+  --d-gold: 196 142 40;
+}
+.dash.dark {
+  --d-bg: 20 22 26; /* #14161A deep warm charcoal */
+  --d-surface: 25 28 34; /* #191C22 */
+  --d-elev: 30 34 41; /* #1E2229 elevated cards */
+  --d-border: 40 45 54; /* #282D36 */
+  --d-border-strong: 55 61 72;
+  --d-ink: 230 232 238; /* #E6E8EE */
+  --d-muted: 151 159 171; /* #979FAB */
+  --d-faint: 96 104 116;
+  --d-hover: 35 40 50; /* #232832 */
+  --d-accent: 56 184 173; /* brighter turquoise on dark */
+  --d-primary: 213 104 68; /* warmer terracotta on dark */
+  --d-gold: 224 162 58;
+}
+
+/* faint girih thread for the dashboard (empty states / sidebar footer) */
+.dash-girih {
+  background-image:
+    linear-gradient(45deg, rgb(var(--d-accent) / 0.5) 25%, transparent 25%, transparent 75%, rgb(var(--d-accent) / 0.5) 75%),
+    linear-gradient(-45deg, rgb(var(--d-primary) / 0.4) 25%, transparent 25%, transparent 75%, rgb(var(--d-primary) / 0.4) 75%);
+  background-size: 22px 22px;
+  background-position: 0 0, 11px 11px;
+}
+
 body {
   background-color: var(--cream);
   color: var(--ink);

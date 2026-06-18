@@ -1,27 +1,26 @@
 "use client";
 
 import { SECTORS, STACKS, PLANS } from "@/lib/mock-ideas";
+import { useLang } from "@/components/LanguageProvider";
 import { ChevronIcon } from "./icons";
 
 export type SortKey = "featured" | "newest" | "trending" | "saved";
 
-const SORTS: { key: SortKey; label: string }[] = [
-  { key: "featured", label: "Featured" },
-  { key: "newest", label: "Newest" },
-  { key: "trending", label: "Trending" },
-  { key: "saved", label: "Most saved" },
-];
+const selectBase =
+  "appearance-none rounded-xl border bg-d-surface py-2 pl-3 pr-8 text-sm shadow-soft outline-none transition-colors hover:border-d-border-strong focus:border-d-accent/60 focus:ring-2 focus:ring-d-accent/10";
 
 function Select({
   label,
   value,
   onChange,
   options,
+  active,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   options: { value: string; label: string }[];
+  active: boolean;
 }) {
   return (
     <div className="relative">
@@ -29,9 +28,7 @@ function Select({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         aria-label={label}
-        className={`appearance-none rounded-lg border bg-surface py-2 pl-3 pr-8 text-sm outline-none transition-colors hover:border-clay/40 focus:border-clay/50 ${
-          value ? "border-clay/40 text-ink" : "border-line text-muted"
-        }`}
+        className={`${selectBase} ${active ? "border-d-accent/50 text-d-ink" : "border-d-border text-d-muted"}`}
       >
         <option value="">{label}</option>
         {options.map((o) => (
@@ -40,7 +37,7 @@ function Select({
           </option>
         ))}
       </select>
-      <ChevronIcon className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 rotate-90 text-muted" />
+      <ChevronIcon className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 rotate-90 text-d-faint" />
     </div>
   );
 }
@@ -64,33 +61,36 @@ export default function FilterBar({
   onPlan: (v: string) => void;
   onSort: (v: SortKey) => void;
 }) {
+  const { t } = useLang();
+  const sorts: { key: SortKey; label: string }[] = [
+    { key: "featured", label: t.dash.sort.featured },
+    { key: "newest", label: t.dash.sort.newest },
+    { key: "trending", label: t.dash.sort.trending },
+    { key: "saved", label: t.dash.sort.saved },
+  ];
+
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <Select label="Sector" value={sector} onChange={onSector} options={SECTORS.map((s) => ({ value: s, label: s }))} />
-      <Select label="Stack" value={stack} onChange={onStack} options={STACKS.map((s) => ({ value: s, label: s }))} />
-      <Select
-        label="Plan"
-        value={plan}
-        onChange={onPlan}
-        options={PLANS.map((p) => ({ value: p, label: p[0].toUpperCase() + p.slice(1) }))}
-      />
+      <Select label={t.dash.filters.sector} value={sector} active={!!sector} onChange={onSector} options={SECTORS.map((s) => ({ value: s, label: t.sectors[s] }))} />
+      <Select label={t.dash.filters.stack} value={stack} active={!!stack} onChange={onStack} options={STACKS.map((s) => ({ value: s, label: s }))} />
+      <Select label={t.dash.filters.plan} value={plan} active={!!plan} onChange={onPlan} options={PLANS.map((p) => ({ value: p, label: t.dash.plan[p] }))} />
 
       <div className="ml-auto flex items-center gap-2">
-        <span className="hidden text-xs text-muted sm:inline">Sort</span>
+        <span className="hidden text-xs text-d-faint sm:inline">{t.dash.sortLabel}</span>
         <div className="relative">
           <select
             value={sort}
             onChange={(e) => onSort(e.target.value as SortKey)}
-            aria-label="Sort ideas"
-            className="appearance-none rounded-lg border border-line bg-surface py-2 pl-3 pr-8 text-sm text-ink outline-none transition-colors hover:border-clay/40 focus:border-clay/50"
+            aria-label={t.dash.sortLabel}
+            className={`${selectBase} border-d-border text-d-ink`}
           >
-            {SORTS.map((s) => (
+            {sorts.map((s) => (
               <option key={s.key} value={s.key}>
                 {s.label}
               </option>
             ))}
           </select>
-          <ChevronIcon className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 rotate-90 text-muted" />
+          <ChevronIcon className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 rotate-90 text-d-faint" />
         </div>
       </div>
     </div>

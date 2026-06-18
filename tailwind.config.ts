@@ -2,6 +2,7 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -20,10 +21,31 @@ const config: Config = {
         ink: "#3B2A1D", // warm dark brown text
         muted: "#8A7259", // warm taupe
         line: "#E4D6BC", // warm sand border
+        // "Velvet Slate" — dashboard skin. Channel-based vars (set in globals.css)
+        // so light/dark switch from one source of truth and support /alpha.
+        d: {
+          bg: "rgb(var(--d-bg) / <alpha-value>)",
+          surface: "rgb(var(--d-surface) / <alpha-value>)",
+          elev: "rgb(var(--d-elev) / <alpha-value>)",
+          border: "rgb(var(--d-border) / <alpha-value>)",
+          "border-strong": "rgb(var(--d-border-strong) / <alpha-value>)",
+          ink: "rgb(var(--d-ink) / <alpha-value>)",
+          muted: "rgb(var(--d-muted) / <alpha-value>)",
+          faint: "rgb(var(--d-faint) / <alpha-value>)",
+          hover: "rgb(var(--d-hover) / <alpha-value>)",
+          accent: "rgb(var(--d-accent) / <alpha-value>)",
+          primary: "rgb(var(--d-primary) / <alpha-value>)",
+          gold: "rgb(var(--d-gold) / <alpha-value>)",
+        },
       },
       fontFamily: {
         display: ["var(--font-display)", "Georgia", "serif"],
         body: ["var(--font-body)", "sans-serif"],
+      },
+      boxShadow: {
+        soft: "0 1px 2px rgb(15 18 23 / 0.04), 0 2px 6px rgb(15 18 23 / 0.06)",
+        "soft-md": "0 2px 4px rgb(15 18 23 / 0.05), 0 10px 28px -10px rgb(15 18 23 / 0.14)",
+        "soft-lg": "0 4px 10px rgb(15 18 23 / 0.06), 0 24px 50px -16px rgb(15 18 23 / 0.20)",
       },
       keyframes: {
         "trail-draw": {
