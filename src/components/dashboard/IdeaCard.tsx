@@ -21,7 +21,7 @@ export default function IdeaCard({
   return (
     <article className="group relative flex h-full flex-col rounded-2xl border border-d-border bg-d-elev p-5 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-d-border-strong hover:shadow-soft-md">
       {/* stretched click target → idea detail */}
-      <Link href={`/dashboard/idea/${idea.id}`} className="absolute inset-0 z-10 rounded-2xl" aria-label={`Open ${idea.name}`} />
+      <Link href={`/dashboard/ideas/${idea.id}`} className="absolute inset-0 z-10 rounded-2xl" aria-label={`Open ${idea.name}`} />
 
       {/* save toggle (above the link) */}
       <button

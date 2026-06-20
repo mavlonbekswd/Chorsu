@@ -108,6 +108,8 @@ const T = {
         views: { problem: "Problem", solution: "Solution", database: "Database", api: "API", monetization: "Monetization" },
         copyJson: "Copy as JSON", copyDb: "Copy schema", copyApi: "Copy API", copied: "Copied",
       },
+      savedPage: { emptyTitle: "No saved ideas yet.", emptyBody: "Wander the stalls and bookmark the ones you like — they'll be waiting here.", browse: "Browse ideas" },
+      settingsPage: { profile: "Profile", name: "Name", email: "Email", emailVal: "guest@chorsu.app", language: "Language", appearance: "Appearance", plan: "Plan", currentPlan: "Current plan", planNote: "You're on the free Wanderer plan.", upgrade: "Upgrade", readonly: "Read-only for now" },
     },
   },
 
@@ -227,6 +229,8 @@ const T = {
         views: { problem: "Проблема", solution: "Решение", database: "База данных", api: "API", monetization: "Монетизация" },
         copyJson: "Скопировать JSON", copyDb: "Копировать схему", copyApi: "Копировать API", copied: "Скопировано",
       },
+      savedPage: { emptyTitle: "Пока нет сохранённых идей.", emptyBody: "Гуляйте по лавкам и отмечайте понравившиеся — они будут ждать вас здесь.", browse: "К идеям" },
+      settingsPage: { profile: "Профиль", name: "Имя", email: "Эл. почта", emailVal: "guest@chorsu.app", language: "Язык", appearance: "Оформление", plan: "План", currentPlan: "Текущий план", planNote: "Вы на бесплатном плане Wanderer.", upgrade: "Улучшить", readonly: "Пока только для чтения" },
     },
   },
 
@@ -346,6 +350,8 @@ const T = {
         views: { problem: "Muammo", solution: "Yechim", database: "Ma’lumotlar bazasi", api: "API", monetization: "Monetizatsiya" },
         copyJson: "JSON nusxalash", copyDb: "Sxemani nusxalash", copyApi: "API nusxalash", copied: "Nusxalandi",
       },
+      savedPage: { emptyTitle: "Hali saqlangan g‘oyalar yo‘q.", emptyBody: "Rastalarni aylanib, yoqqanlarini belgilang — ular shu yerda sizni kutadi.", browse: "G‘oyalarga o‘tish" },
+      settingsPage: { profile: "Profil", name: "Ism", email: "Email", emailVal: "guest@chorsu.app", language: "Til", appearance: "Ko‘rinish", plan: "Reja", currentPlan: "Joriy reja", planNote: "Siz bepul Wanderer rejasidasiz.", upgrade: "Yangilash", readonly: "Hozircha faqat o‘qish uchun" },
     },
   },
 } as const;
