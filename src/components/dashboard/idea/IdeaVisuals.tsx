@@ -3,7 +3,10 @@
 // Visual-first building blocks for the idea detail page. Everything renders
 // in-app with plain SVG + divs (no chart lib runtime needed) and reads the
 // velvet-slate theme through CSS variables so it tracks light/dark.
+// Generic renderers: each takes per-idea data + pulls its chrome labels from
+// i18n, so the same component draws Nasiya, Smena, Savdo… in any language.
 
+import { useLang } from "@/components/LanguageProvider";
 import type {
   FunnelStage,
   PositioningRow,
@@ -57,23 +60,23 @@ export function FunnelChart({ stages }: { stages: FunnelStage[] }) {
 
 // ── Positioning 2×2 (local fit × simplicity) ────────────────────────────────
 export function PositioningChart({ rows }: { rows: PositioningRow[] }) {
+  const { t } = useLang();
+  const v = t.dash.ideaDetail.vis;
   const W = 360, H = 300, pad = 36;
-  const x = (v: number) => pad + ((v - 0.5) / 2.5) * (W - pad * 2);
-  const y = (v: number) => H - pad - ((v - 0.5) / 2.5) * (H - pad * 2);
+  const x = (val: number) => pad + ((val - 0.5) / 2.5) * (W - pad * 2);
+  const y = (val: number) => H - pad - ((val - 0.5) / 2.5) * (H - pad * 2);
   return (
     <div className="overflow-x-auto">
       <svg viewBox={`0 0 ${W} ${H}`} className="mx-auto w-full max-w-md" role="img" aria-label="Positioning chart">
-        {/* quadrant guides */}
         <line x1={W / 2} y1={pad} x2={W / 2} y2={H - pad} stroke={border} strokeDasharray="3 4" />
         <line x1={pad} y1={H / 2} x2={W - pad} y2={H / 2} stroke={border} strokeDasharray="3 4" />
-        {/* axes */}
         <line x1={pad} y1={H - pad} x2={W - pad} y2={H - pad} stroke={border} />
         <line x1={pad} y1={pad} x2={pad} y2={H - pad} stroke={border} />
         <text x={W - pad} y={H - pad + 22} textAnchor="end" fontSize="10" fill={muted}>
-          Local fit →
+          {v.localFit}
         </text>
         <text x={pad - 8} y={pad - 12} fontSize="10" fill={muted}>
-          ↑ Simplicity
+          {v.simplicity}
         </text>
         {rows.map((r, i) => {
           const isThis = i === rows.length - 1;
@@ -114,7 +117,6 @@ const NODE_TONE: Record<ArchNode["kind"], string> = {
 };
 
 export function ArchitectureDiagram({ nodes, edges }: { nodes: ArchNode[]; edges: ArchEdge[] }) {
-  // Columns by kind to read left→right: client · api · data · external
   const order: ArchNode["kind"][] = ["client", "api", "data", "external"];
   const cols = order.map((k) => nodes.filter((n) => n.kind === k));
   return (
@@ -206,54 +208,50 @@ export function SequenceFlow({ steps }: { steps: FlowStep[] }) {
   );
 }
 
-// ── Roadmap v0→v3 timeline ──────────────────────────────────────────────────
+// ── Roadmap v0→v3 — vertical timeline (the standout visual) ─────────────────
 const VTONE = ["bg-d-accent", "bg-d-primary", "bg-d-gold", "bg-d-ink"];
 
 export function RoadmapTimeline({ versions }: { versions: RoadmapVersion[] }) {
+  const { t } = useLang();
+  const r = t.dash.ideaDetail.road;
   return (
-    <div className="space-y-4">
-      {/* milestone rail */}
-      <div className="flex items-center gap-1 overflow-x-auto pb-1">
-        {versions.map((v, i) => (
-          <div key={v.id} className="flex min-w-0 flex-1 items-center gap-1">
-            <div className="flex flex-col items-center gap-1">
-              <span className={`flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-bold text-white ${VTONE[i]}`}>
+    <div>
+      {versions.map((v, i) => {
+        const last = i === versions.length - 1;
+        return (
+          <div key={v.id} className="relative flex gap-4 pb-6 last:pb-0">
+            {/* rail: node + connecting line */}
+            <div className="flex flex-col items-center">
+              <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white shadow-soft ${VTONE[i]} ${i === 0 ? "" : "ring-2 ring-d-bg"}`}>
                 {v.id}
               </span>
+              {!last && <span className="mt-1 w-px flex-1 bg-d-border" />}
             </div>
-            {i < versions.length - 1 && <span className="h-0.5 flex-1 bg-d-border" />}
-          </div>
-        ))}
-      </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {versions.map((v, i) => (
-          <article key={v.id} className="rounded-2xl border border-d-border bg-d-elev p-4 shadow-soft">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                <span className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-white ${VTONE[i]}`}>
-                  {v.id}
-                </span>
+
+            {/* version card */}
+            <article className="mb-0 flex-1 rounded-2xl border border-d-border bg-d-elev p-4 shadow-soft">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <h4 className="font-display text-base font-semibold text-d-ink">{v.title}</h4>
+                <span className="rounded-full border border-d-border px-2 py-0.5 text-[10px] font-medium text-d-faint">{v.effort}</span>
               </div>
-              <span className="rounded-full border border-d-border px-2 py-0.5 text-[10px] font-medium text-d-faint">{v.effort}</span>
-            </div>
-            <p className="mt-2 text-sm font-medium text-d-muted">{v.goal}</p>
-            <ol className="mt-3 space-y-1.5">
-              {v.steps.map((s, si) => (
-                <li key={si} className="flex gap-2 text-xs text-d-muted">
-                  <span className="font-mono text-d-faint">{si + 1}.</span>
-                  <span>{s}</span>
-                </li>
-              ))}
-            </ol>
-            <dl className="mt-3 space-y-1.5 border-t border-d-border pt-3 text-xs">
-              <Row label="Done when" value={v.doneWhen} tone="text-d-accent" />
-              <Row label="Skip for now" value={v.skip} tone="text-d-primary" />
-              <Row label="Ties to" value={v.tiesTo} tone="text-d-faint" />
-            </dl>
-          </article>
-        ))}
-      </div>
+              <p className="mt-1.5 text-sm font-medium text-d-muted">{v.goal}</p>
+              <ol className="mt-3 space-y-1.5">
+                {v.steps.map((s, si) => (
+                  <li key={si} className="flex gap-2 text-xs text-d-muted">
+                    <span className="font-mono text-d-faint">{si + 1}.</span>
+                    <span>{s}</span>
+                  </li>
+                ))}
+              </ol>
+              <dl className="mt-3 space-y-1.5 border-t border-d-border pt-3 text-xs">
+                <Row label={r.doneWhen} value={v.doneWhen} tone="text-d-accent" />
+                <Row label={r.skip} value={v.skip} tone="text-d-primary" />
+                <Row label={r.tiesTo} value={v.tiesTo} tone="text-d-faint" />
+              </dl>
+            </article>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -300,10 +298,10 @@ export function Wireframe({ screen }: { screen: Screen }) {
 export function TapFlow({ taps }: { taps: string[] }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      {taps.map((t, i) => (
+      {taps.map((tap, i) => (
         <div key={i} className="flex items-center gap-2">
           <span className="rounded-lg border border-d-accent/40 bg-d-accent/10 px-3 py-1.5 text-xs font-medium text-d-accent">
-            {t}
+            {tap}
           </span>
           {i < taps.length - 1 && <span className="text-d-faint">→</span>}
         </div>
@@ -314,12 +312,13 @@ export function TapFlow({ taps }: { taps: string[] }) {
 
 // ── Break-even chart (revenue vs cost) ──────────────────────────────────────
 export function BreakevenChart({ points }: { points: BreakevenPoint[] }) {
+  const { t } = useLang();
+  const v = t.dash.ideaDetail.vis;
   const W = 520, H = 220, pad = 32;
   const max = Math.max(...points.flatMap((p) => [p.revenue, p.cost])) * 1.1;
   const x = (i: number) => pad + (i / (points.length - 1)) * (W - pad * 2);
-  const y = (v: number) => H - pad - (v / max) * (H - pad * 2);
+  const y = (val: number) => H - pad - (val / max) * (H - pad * 2);
   const line = (key: "revenue" | "cost") => points.map((p, i) => `${x(i)},${y(p[key])}`).join(" ");
-  // crossover point (where revenue overtakes cost)
   const crossIdx = points.findIndex((p) => p.revenue >= p.cost);
   return (
     <div className="overflow-x-auto">
@@ -332,7 +331,7 @@ export function BreakevenChart({ points }: { points: BreakevenPoint[] }) {
           <g>
             <circle cx={x(crossIdx)} cy={y(points[crossIdx].revenue)} r={5} fill={accent} />
             <text x={x(crossIdx)} y={y(points[crossIdx].revenue) - 10} textAnchor="middle" fontSize="10" fontWeight={700} fill={accent}>
-              break-even
+              {v.breakEven}
             </text>
           </g>
         )}
@@ -342,9 +341,9 @@ export function BreakevenChart({ points }: { points: BreakevenPoint[] }) {
           </text>
         ))}
       </svg>
-      <div className="mt-2 flex gap-4 text-xs">
-        <Legend color={accent} label="Revenue (paying shops)" />
-        <Legend color={primary} label="Cost (monthly burn)" />
+      <div className="mt-2 flex flex-wrap gap-4 text-xs">
+        <Legend color={accent} label={v.revenue} />
+        <Legend color={primary} label={v.cost} />
       </div>
     </div>
   );
@@ -360,14 +359,27 @@ function Legend({ color, label }: { color: string; label: string }) {
 }
 
 // ── Price-anchor (cost of pain vs price) ────────────────────────────────────
-export function PriceAnchor({ painLabel, painValue, priceLabel, priceValue }: { painLabel: string; painValue: number; priceLabel: string; priceValue: number }) {
+export function PriceAnchor({
+  painLabel,
+  painValue,
+  priceLabel,
+  priceValue,
+}: {
+  painLabel: string;
+  painValue: number;
+  priceLabel: string;
+  priceValue: number;
+}) {
+  const { t } = useLang();
+  const v = t.dash.ideaDetail.vis;
   const max = Math.max(painValue, priceValue);
-  const pct = (v: number) => `${Math.round((v / max) * 100)}%`;
+  const pct = (val: number) => `${Math.round((val / max) * 100)}%`;
+  const fmt = (n: number) => `${n.toLocaleString("ru-RU")} ${v.perMonth}`;
   return (
     <div className="space-y-3">
-      <Bar label={painLabel} width={pct(painValue)} tone={primary} value={`${painValue.toLocaleString("ru-RU")} so'm/mo`} />
-      <Bar label={priceLabel} width={pct(priceValue)} tone={accent} value={`${priceValue.toLocaleString("ru-RU")} so'm/mo`} />
-      <p className="text-xs text-d-muted">Price sits well below the monthly pain — recovering a single debt covers it.</p>
+      <Bar label={painLabel} width={pct(painValue)} tone={primary} value={fmt(painValue)} />
+      <Bar label={priceLabel} width={pct(priceValue)} tone={accent} value={fmt(priceValue)} />
+      <p className="text-xs text-d-muted">{v.priceBelow}</p>
     </div>
   );
 }

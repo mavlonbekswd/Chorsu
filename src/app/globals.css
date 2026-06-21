@@ -204,3 +204,19 @@ body {
     stroke-dashoffset: 0;
   }
 }
+
+/* Idea detail — cross-fade when switching tabs (auto-disabled by the
+   reduced-motion block above via animation-duration override). */
+@keyframes ideaFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.idea-fade {
+  animation: ideaFadeIn 0.25s ease both;
+}
